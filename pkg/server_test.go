@@ -40,3 +40,13 @@ func TestHttpServer_Address(t *testing.T) {
 		})
 	}
 }
+
+func TestHttpServer_StartMessage(t *testing.T) {
+	var expected = "Starting HTTP server at xas:2999"
+	s := NewHttpServer()
+	s.Host = "xas"
+	s.Port = "2999"
+	if msg := s.StartMessage(); msg != expected {
+		t.Error(s.StartMessage())
+	}
+}
