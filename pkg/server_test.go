@@ -15,7 +15,7 @@ func TestHttpServer_Address(t *testing.T) {
 		fields fields
 	}{
 		{
-			name:   "1",
+			name: "1",
 			fields: fields{
 				Host: "0.0.0.0",
 				Port: "80",

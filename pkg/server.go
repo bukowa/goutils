@@ -7,20 +7,20 @@ import (
 )
 
 type HttpServer struct {
-	Host string
-	HostFlagKey string
+	Host            string
+	HostFlagKey     string
 	HostFlagDefault string
 
-	Port string
-	PortFlagKey string
+	Port            string
+	PortFlagKey     string
 	PortFlagDefault string
 }
 
 func NewHttpServer() *HttpServer {
 	return &HttpServer{
-		HostFlagKey: "host",
+		HostFlagKey:     "host",
 		HostFlagDefault: "localhost",
-		PortFlagKey: "port",
+		PortFlagKey:     "port",
 		PortFlagDefault: "8280",
 	}
 }
@@ -33,7 +33,7 @@ func (s *HttpServer) StartMessage() string {
 	return fmt.Sprintf("Starting HTTP server at %s:%s", s.Host, s.Port)
 }
 
-func (s *HttpServer) SetFlags()  {
+func (s *HttpServer) SetFlags() {
 	flag.StringVar(&s.Host, s.HostFlagKey, s.HostFlagDefault, "host to run on")
 	flag.StringVar(&s.Port, s.PortFlagKey, s.PortFlagDefault, "port to run on")
 }
