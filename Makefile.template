@@ -1,0 +1,6 @@
+
+gofmt:
+	go fmt ./...
+
+gotest:
+	go test -v  ./...
