@@ -15,7 +15,7 @@ gotest:
 
 for-module-cmd:
 	for module in ${SUBMODULES} ; do \
-	$(CMD) $$module $(ARGS); \
+	$(CMD) $$module $(ARGS) || exit 1 ; \
 	done
 
 git-perm:
