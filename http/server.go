@@ -1,4 +1,4 @@
-package pkg
+package http
 
 import (
 	"flag"
@@ -18,8 +18,10 @@ type HttpServer struct {
 
 func NewHttpServer() *HttpServer {
 	return &HttpServer{
+		Host:            "",
 		HostFlagKey:     "host",
 		HostFlagDefault: "localhost",
+		Port:            "",
 		PortFlagKey:     "port",
 		PortFlagDefault: "8280",
 	}

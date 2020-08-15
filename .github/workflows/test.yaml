@@ -9,8 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: build
-        run: make build
-
       - name: test
-        run: make test
+        run: make gotest
