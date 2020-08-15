@@ -10,34 +10,34 @@ import (
 )
 
 // create flags with new flagset
-func newConfigFlags() *ConfigFlags {
+func newConfigFlags() *ConfigFlag {
 	fs := flag.NewFlagSet("test", flag.ExitOnError)
-	cf := NewConfigFlags()
-	cf.SetFlagSet(fs)
+	cf := NewConfigFlag()
+	cf.FlagSet = fs
 	return cf
 }
 
 func TestConfigFlags_SetFlagSet(t *testing.T) {
 	fs := flag.NewFlagSet("test", flag.ExitOnError)
-	cf := NewConfigFlags()
-	cf.SetFlagSet(fs)
+	cf := NewConfigFlag()
+	cf.FlagSet = fs
 
-	if !reflect.DeepEqual(fs, cf.Path.FlagSet) {
+	if !reflect.DeepEqual(fs, cf.FlagSet) {
 		t.Error()
 	}
 }
 
 func TestNewConfigFlags(t *testing.T) {
-	NewConfigFlags()
+	NewConfigFlag()
 }
 
 // use provided config path
 func TestConfigFlags_NewClient(t *testing.T) {
 	fs := flag.NewFlagSet("test", flag.ExitOnError)
-	cf := NewConfigFlags()
-	cf.SetFlagSet(fs)
-	cf.SetFlags()
-	args := []string{"--kubeconfig="+path.Join("./", "config.test.txt")}
+	cf := NewConfigFlag()
+	cf.FlagSet = fs
+	cf.Set()
+	args := []string{"--kubeconfig=" + path.Join("./", "config.test.txt")}
 	if err := fs.Parse(args); err != nil {
 		panic(err)
 	}
@@ -51,9 +51,9 @@ func TestConfigFlags_NewClient(t *testing.T) {
 // use cluster config when path is empty
 func TestConfigFlags_NewClient2(t *testing.T) {
 	fs := flag.NewFlagSet("test", flag.ExitOnError)
-	cf := NewConfigFlags()
-	cf.SetFlagSet(fs)
-	cf.SetFlags()
+	cf := NewConfigFlag()
+	cf.FlagSet = fs
+	cf.Set()
 	args := []string{"--kubeconfig="}
 	if err := fs.Parse(args); err != nil {
 		panic(err)
@@ -64,17 +64,16 @@ func TestConfigFlags_NewClient2(t *testing.T) {
 	}
 }
 
-
 func ExampleConfigFlags_NewClient() {
-	cf := NewConfigFlags()
+	cf := NewConfigFlag()
 
 	// by default its home directory config file
-	cf.Path.Default = "./kube/config"
+	cf.Default = "./kube/config"
 
 	// default flagset == `os.CommandLine`
 	fs := flag.NewFlagSet("test", flag.ExitOnError)
-	cf.SetFlagSet(fs)
-	cf.SetFlags()
+	cf.FlagSet = (fs)
+	cf.Set()
 
 	// parse flags or call directly `flags.Parse`
 	if err := fs.Parse([]string{""}); err != nil {
