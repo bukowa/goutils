@@ -4,23 +4,22 @@ SUBMODULES := http kubernetes utils
 gen-makefiles:
 	"$(MAKE)" for-module-cmd CMD="./Makefile.generate.sh"
 
+#gofmt:
+#	"$(MAKE)" for-module-cmd CMD="./gofmt.sh"
+
 gofmt:
-	go fmt ./...
+	"$(MAKE)" for-module-cmd CMD="./gofmt.sh"
 
 gotest:
-	go test -v  ./...
+	"$(MAKE)" for-module-cmd CMD="./gotest.sh"
 
 for-module-cmd:
 	for module in ${SUBMODULES} ; do \
-	$(CMD) $$module ; \
+	$(CMD) $$module $(ARGS); \
 	done
 
-for-makefile:
-	for module in ${SUBMODULES}; do \
-  	"$(MAKE)" -C $$module $(ARGS) || exit 1; \
-  	done
-
-#git-perm:
-#	git update-index --chmod=+x \
-#	./_tests/pkg/server_test.sh \
-#	&& git commit -m fix file perm
+git-perm:
+	git update-index --chmod=+x \
+	./gofmt.sh \
+	./gotest.sh \
+	&& git commit -m fix file perm
