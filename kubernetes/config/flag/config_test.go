@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -47,5 +48,4 @@ func ExampleConfigFlags_NewClient() {
 
 	client, err := cf.NewClient()
 	fmt.Println(client, err)
-	// Output: <nil> CreateFile ./kube/config: The system cannot find the path specified.
 }
