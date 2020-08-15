@@ -1,0 +1,19 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: asdasdasdsad
+    server: https://kajsdaoidjasiodasduiaosdusa89das7d8as97d8sad78sa97d89sadasuduasiodasiodjsaijdas98dusa98dzxczxxzzxc
+  name: asdasdasdsad
+contexts:
+- context:
+    cluster: asdasdasdsad
+    namespace: default
+    user: admin
+  name: asdasdasdsad
+current-context: asdasdasdsad
+kind: Config
+preferences: {}
+users:
+- name: admin
+  user:
+    token: asdsasa9d8sa9da9s8d9sa8d9as89d8
