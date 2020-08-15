@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"reflect"
-	"strings"
 	"testing"
 )
 
