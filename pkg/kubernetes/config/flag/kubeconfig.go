@@ -12,7 +12,7 @@ const (
 	ClusterPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 )
 
-var FlagPathHome = &flag.String{
+var PathHome = &flag.String{
 	Opts: flag.Opts{
 		Name:    Name,
 		Default: filepath.Join(pkg.HomeOrWd(), ".kube", "config"),
