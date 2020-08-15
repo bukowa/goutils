@@ -10,4 +10,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: test
-        run: make gotest
+        run: |
+          chmod +x ./gofmt.sh
+          chmod +x ./gotest.sh
+          make gotest
