@@ -11,3 +11,17 @@ func GetEnvFatal(k string) (v string) {
 	}
 	return
 }
+
+func HomeDir() string {
+	if h := os.Getenv("HOME"); h != "" {
+		return h
+	}
+	return os.Getenv("USERPROFILE")
+}
+
+func HomeOrWd() (dir string) {
+	if dir = HomeDir(); dir == "" {
+		dir, _ = os.Getwd()
+	}
+	return
+}
