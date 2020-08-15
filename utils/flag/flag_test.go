@@ -14,7 +14,7 @@ func setArgs(args []string) {
 func TestNewOpts(t *testing.T) {
 	var flagSet = flag.NewFlagSet("test", flag.ExitOnError)
 	var opts = NewOpts("valid", true, "", flagSet)
-	if !reflect.DeepEqual(flagSet, opts.FlagSet){
+	if !reflect.DeepEqual(flagSet, opts.FlagSet) {
 		t.Error(flagSet, opts.FlagSet)
 	}
 }
@@ -41,7 +41,7 @@ func TestBool_Set(t *testing.T) {
 	b := Bool{
 		Opts: NewOpts("valid", false, "", flagSet),
 	}
-	if !reflect.DeepEqual(flagSet, b.FlagSet){
+	if !reflect.DeepEqual(flagSet, b.FlagSet) {
 
 	}
 	b.Set()

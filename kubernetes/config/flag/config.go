@@ -2,8 +2,8 @@ package flag
 
 import (
 	"flag"
-	uflag "github.com/bukowa/goutils/utils/flag"
 	"github.com/bukowa/goutils/utils"
+	uflag "github.com/bukowa/goutils/utils/flag"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"path/filepath"
@@ -15,7 +15,7 @@ const (
 )
 
 type ConfigFlags struct {
-	Path      uflag.String
+	Path uflag.String
 }
 
 func (cf *ConfigFlags) NewClient() (*rest.Config, error) {
@@ -42,7 +42,7 @@ func (cf *ConfigFlags) SetFlags() {
 // clientcmd.BuildConfigFromFlags
 func NewConfigFlags() *ConfigFlags {
 	return &ConfigFlags{
-		Path:      ConfigPathFlag,
+		Path: ConfigPathFlag,
 	}
 }
 
