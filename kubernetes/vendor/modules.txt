@@ -1,4 +1,4 @@
-# github.com/bukowa/goutils/utils v0.0.0-20200815174808-058f07650112
+# github.com/bukowa/goutils/utils v0.0.0-20200815194828-f6dd3cc5c032
 ## explicit
 github.com/bukowa/goutils/utils
 github.com/bukowa/goutils/utils/flag

@@ -3,7 +3,7 @@ module github.com/bukowa/goutils/kubernetes
 go 1.14
 
 require (
-	github.com/bukowa/goutils/utils v0.0.0-20200815174808-058f07650112
+	github.com/bukowa/goutils/utils v0.0.0-20200815194828-f6dd3cc5c032
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect

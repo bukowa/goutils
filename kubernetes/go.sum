@@ -14,6 +14,8 @@ github.com/PuerkitoBio/purell v1.0.0/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbt
 github.com/PuerkitoBio/urlesc v0.0.0-20160726150825-5bd2802263f2/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
 github.com/bukowa/goutils/utils v0.0.0-20200815174808-058f07650112 h1:Iy7P9acJWY5kVh2R1JacjBs0qu7aewh+k7V4qEDYM/w=
 github.com/bukowa/goutils/utils v0.0.0-20200815174808-058f07650112/go.mod h1://zmjovnmbU9ae2BXXCpd1CxdL4cDAWmCfpjjWKmi44=
+github.com/bukowa/goutils/utils v0.0.0-20200815194828-f6dd3cc5c032 h1:BO+gtmRbkJzAq5K2MjyydbOICHlMrAX/sqUOBGHZJZs=
+github.com/bukowa/goutils/utils v0.0.0-20200815194828-f6dd3cc5c032/go.mod h1://zmjovnmbU9ae2BXXCpd1CxdL4cDAWmCfpjjWKmi44=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
