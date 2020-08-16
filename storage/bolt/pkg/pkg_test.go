@@ -7,10 +7,10 @@ import (
 	"testing"
 )
 
-var TestDatabase = func() (*BoltDatabase, func()) {
+var TestDatabase = func() (*Database, func()) {
 	// create database
 	os.Remove("test.db")
-	db := &BoltDatabase{}
+	db := &Database{}
 	EP(db.Init(nil, "test.db", TestUser{}))
 	return db, func() {
 		db.Close()

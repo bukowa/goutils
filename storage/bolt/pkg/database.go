@@ -8,11 +8,11 @@ import (
 
 var ErrorBucketDoesNotExist = NewError("bucket for %s does not exists")
 
-type BoltDatabase struct {
+type Database struct {
 	*bolt.DB
 }
 
-func (d *BoltDatabase) Init(opts *bolt.Options, path string, types ...Model) (err error) {
+func (d *Database) Init(opts *bolt.Options, path string, types ...Model) (err error) {
 	// open database
 	d.DB, err = bolt.Open(path, 0600, opts)
 	if err != nil {
@@ -31,7 +31,7 @@ func (d *BoltDatabase) Init(opts *bolt.Options, path string, types ...Model) (er
 	return
 }
 
-func (d *BoltDatabase) NextID(bucket *bolt.Bucket) (b []byte, err error) {
+func (d *Database) NextID(bucket *bolt.Bucket) (b []byte, err error) {
 	seq, err := bucket.NextSequence()
 	if err != nil {
 		return
@@ -39,7 +39,7 @@ func (d *BoltDatabase) NextID(bucket *bolt.Bucket) (b []byte, err error) {
 	return BigEndian(seq), nil
 }
 
-func (d *BoltDatabase) BucketFor(m Model, tx *bolt.Tx) (*bolt.Bucket, error) {
+func (d *Database) BucketFor(m Model, tx *bolt.Tx) (*bolt.Bucket, error) {
 	name := []byte(getType(m))
 	bucket := tx.Bucket(name)
 	if bucket == nil {

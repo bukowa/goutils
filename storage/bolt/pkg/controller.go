@@ -16,7 +16,7 @@ type ControllerInterface interface {
 }
 
 type Controller struct {
-	*BoltDatabase
+	*Database
 }
 
 func (c *Controller) Get(m Model) (b []byte, err error) {
