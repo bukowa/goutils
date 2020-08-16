@@ -15,11 +15,11 @@ func (u *User) Key() []byte {
 }
 
 func main() {
-	db := &pkg.BoltDatabase{}
+	db := &pkg.Database{}
 	if err := db.Init(nil, "database.test", &User{}); err != nil {
 		panic(err)
 	}
-	cntrl := &pkg.Controller{BoltDatabase: db}
+	cntrl := &pkg.Controller{Database: db}
 	cntrl.Create(&User{Name: "asxx"})
 	b, _ := cntrl.Get(&User{Name: "new"})
 	if b == nil {
