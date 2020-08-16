@@ -2,11 +2,10 @@ package pkg
 
 import (
 	"encoding/json"
-	"errors"
 	"github.com/boltdb/bolt"
 )
 
-var ErrorEmptyKey = errors.New("len of model key is 0")
+var ErrorEmptyKey = NewError("value of %s.Key() for model %s is empty")
 
 type ControllerInterface interface {
 	Create(Model) error
@@ -25,7 +24,10 @@ func (c *Controller) Get(m Model) (b []byte, err error) {
 		return
 	}
 	err = c.View(func(tx *bolt.Tx) error {
-		bucket := c.BucketFor(m, tx)
+		bucket, err := c.BucketFor(m, tx)
+		if err != nil {
+			return err
+		}
 		b = bucket.Get(m.Key())
 		return nil
 	})
@@ -36,12 +38,16 @@ func (c *Controller) Create(m Model) (err error) {
 	if err = checkKey(m); err != nil {
 		return
 	}
-	b, err := json.Marshal(m)
+	var b []byte
+	b, err = json.Marshal(m)
 	if err != nil {
 		return
 	}
 	err = c.Update(func(tx *bolt.Tx) error {
-		bucket := c.BucketFor(m, tx)
+		bucket, err := c.BucketFor(m, tx)
+		if err != nil {
+			return err
+		}
 		return bucket.Put(m.Key(), b)
 	})
 	return
@@ -52,7 +58,10 @@ func (c *Controller) Delete(m Model) (err error) {
 		return
 	}
 	err = c.Update(func(tx *bolt.Tx) error {
-		bucket := c.BucketFor(m, tx)
+		bucket, err := c.BucketFor(m, tx)
+		if err != nil {
+			return err
+		}
 		return bucket.Put(m.Key(), nil)
 	})
 	return
@@ -63,7 +72,10 @@ func (c *Controller) Exists(m Model) (t bool, err error) {
 		return
 	}
 	err = c.View(func(tx *bolt.Tx) (err error) {
-		bucket := c.BucketFor(m, tx)
+		bucket, err := c.BucketFor(m, tx)
+		if err != nil {
+			return err
+		}
 		b := bucket.Get(m.Key())
 		if len(b) > 0 {
 			t = true
@@ -75,7 +87,11 @@ func (c *Controller) Exists(m Model) (t bool, err error) {
 
 func (c *Controller) Stats(m Model) (bs bolt.BucketStats, err error) {
 	err = c.View(func(tx *bolt.Tx) error {
-		bs = c.BucketFor(m, tx).Stats()
+		bucket, err := c.BucketFor(m, tx)
+		if err != nil {
+			return err
+		}
+		bs = bucket.Stats()
 		return nil
 	})
 	return
@@ -83,7 +99,7 @@ func (c *Controller) Stats(m Model) (bs bolt.BucketStats, err error) {
 
 func checkKey(m Model) error {
 	if len(m.Key()) < 1 {
-		return ErrorEmptyKey
+		return ErrorEmptyKey.ForModel(m)
 	}
 	return nil
 }

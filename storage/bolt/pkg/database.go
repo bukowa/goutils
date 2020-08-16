@@ -2,11 +2,11 @@ package pkg
 
 import (
 	"encoding/binary"
-	"errors"
-	"fmt"
 	"github.com/boltdb/bolt"
 	"reflect"
 )
+
+var ErrorBucketDoesNotExist = NewError("bucket for %s does not exists")
 
 type BoltDatabase struct {
 	*bolt.DB
@@ -31,7 +31,7 @@ func (d *BoltDatabase) Init(opts *bolt.Options, path string, types ...Model) (er
 	return
 }
 
-func (d *BoltDatabase) NextId(bucket *bolt.Bucket) (b []byte, err error) {
+func (d *BoltDatabase) NextID(bucket *bolt.Bucket) (b []byte, err error) {
 	seq, err := bucket.NextSequence()
 	if err != nil {
 		return
@@ -39,21 +39,21 @@ func (d *BoltDatabase) NextId(bucket *bolt.Bucket) (b []byte, err error) {
 	return BigEndian(seq), nil
 }
 
-func (d *BoltDatabase) BucketFor(m Model, tx *bolt.Tx) *bolt.Bucket {
+func (d *BoltDatabase) BucketFor(m Model, tx *bolt.Tx) (*bolt.Bucket, error) {
 	name := []byte(getType(m))
 	bucket := tx.Bucket(name)
 	if bucket == nil {
-		panic(errors.New(fmt.Sprintf("bucket %v does not exist", name)))
+		return nil, ErrorBucketDoesNotExist.ForString(string(name))
 	}
-	return bucket
+	return bucket, nil
 }
 
-func getType(t interface{}) string {
-	if t := reflect.TypeOf(t); t.Kind() == reflect.Ptr {
+func getType(x interface{}) string {
+	var t = reflect.TypeOf(x)
+	if t.Kind() == reflect.Ptr {
 		return t.Elem().Name()
-	} else {
-		return t.Name()
 	}
+	return t.Name()
 }
 
 func BigEndian(v uint64) []byte {

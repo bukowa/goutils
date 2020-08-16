@@ -1,6 +1,6 @@
 module github.com/bukowa/goutils/storage/bolt
 
-go 1.14
+go 1.15
 
 require (
 	github.com/boltdb/bolt v1.3.1
