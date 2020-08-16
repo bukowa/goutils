@@ -1,6 +1,6 @@
 module github.com/bukowa/goutils/kubernetes
 
-go 1.14
+go 1.15
 
 require (
 	github.com/bukowa/goutils/utils v0.0.0-20200815194828-f6dd3cc5c032
