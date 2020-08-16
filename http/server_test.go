@@ -31,7 +31,7 @@ func TestHttpServer_Address(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewHttpServer()
+			s := NewServer()
 			s.Host = tt.fields.Host
 			s.Port = tt.fields.Port
 			if s.Address() != fmt.Sprintf("%s:%s", tt.fields.Host, tt.fields.Port) {
@@ -43,7 +43,7 @@ func TestHttpServer_Address(t *testing.T) {
 
 func TestHttpServer_StartMessage(t *testing.T) {
 	var expected = "Starting HTTP server at xas:2999"
-	s := NewHttpServer()
+	s := NewServer()
 	s.Host = "xas"
 	s.Port = "2999"
 	if msg := s.StartMessage(); msg != expected {

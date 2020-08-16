@@ -6,7 +6,9 @@ import (
 	"net/http"
 )
 
-type HttpServer struct {
+type Server struct {
+	FlagSet *flag.FlagSet
+
 	Host            string
 	HostFlagKey     string
 	HostFlagDefault string
@@ -16,8 +18,9 @@ type HttpServer struct {
 	PortFlagDefault string
 }
 
-func NewHttpServer() *HttpServer {
-	return &HttpServer{
+func NewServer() *Server {
+	return &Server{
+		FlagSet:         flag.CommandLine,
 		Host:            "",
 		HostFlagKey:     "host",
 		HostFlagDefault: "localhost",
@@ -27,19 +30,19 @@ func NewHttpServer() *HttpServer {
 	}
 }
 
-func (s *HttpServer) Address() string {
+func (s *Server) Address() string {
 	return fmt.Sprintf("%s:%s", s.Host, s.Port)
 }
 
-func (s *HttpServer) StartMessage() string {
+func (s *Server) StartMessage() string {
 	return fmt.Sprintf("Starting HTTP server at %s:%s", s.Host, s.Port)
 }
 
-func (s *HttpServer) SetFlags() {
-	flag.StringVar(&s.Host, s.HostFlagKey, s.HostFlagDefault, "host to run on")
-	flag.StringVar(&s.Port, s.PortFlagKey, s.PortFlagDefault, "port to run on")
+func (s *Server) SetFlags() {
+	s.FlagSet.StringVar(&s.Host, s.HostFlagKey, s.HostFlagDefault, "host to run on")
+	s.FlagSet.StringVar(&s.Port, s.PortFlagKey, s.PortFlagDefault, "port to run on")
 }
 
-func (s *HttpServer) ListenAndServe(handler http.Handler) error {
+func (s *Server) ListenAndServe(handler http.Handler) error {
 	return http.ListenAndServe(s.Address(), handler)
 }
