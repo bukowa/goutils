@@ -1,5 +1,5 @@
 DOCKER_TAG="goutils:tests"
-SUBMODULES := http kubernetes utils
+SUBMODULES := http kubernetes utils storage/bolt
 
 gen-makefiles:
 	"$(MAKE)" for-module-cmd CMD="./Makefile.generate.sh"
