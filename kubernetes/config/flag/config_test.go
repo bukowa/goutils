@@ -37,7 +37,7 @@ func TestConfigFlags_NewClient(t *testing.T) {
 	cf := NewConfigFlag()
 	cf.FlagSet = fs
 	cf.Set()
-	args := []string{"--kubeconfig=" + path.Join("./", "config.test.txt")}
+	args := []string{"--kubeconfig=" + path.Join("./", "_config.test.txt")}
 	if err := fs.Parse(args); err != nil {
 		panic(err)
 	}
