@@ -1,13 +1,12 @@
 package flag
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 )
 
 func ErrDefaultValueType(s string, t interface{}) error {
-	return errors.New(fmt.Sprintf("invalid type %v", t))
+	return fmt.Errorf("invalid type %v", t)
 }
 
 type Opts struct {
