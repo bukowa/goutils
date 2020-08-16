@@ -18,6 +18,9 @@ for-module-cmd:
 	$(CMD) $$module $(ARGS) || exit 1 ; \
 	done
 
+golint:
+	golint $$(go list -f="{{.Dir}}" ./...)
+
 git-perm:
 	git update-index --chmod=+x \
 	./gofmt.sh \
