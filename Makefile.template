@@ -7,3 +7,6 @@ gotest:
 
 golint:
 	golint $$(go list -f="{{.Dir}}" ./...)
+
+
+go: gofmt golint gotest
