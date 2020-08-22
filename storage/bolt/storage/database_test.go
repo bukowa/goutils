@@ -1,4 +1,4 @@
-package pkg
+package storage
 
 import (
 	"encoding/json"
@@ -7,10 +7,10 @@ import (
 	"testing"
 )
 
-var TestDatabase = func() (*Database, func()) {
+var TestDatabase = func() (*DB, func()) {
 	// create database
 	os.Remove("test.db")
-	db := &Database{}
+	db := &DB{}
 	EP(db.Init(nil, "test.db", TestUser{}))
 	return db, func() {
 		db.Close()
@@ -31,30 +31,29 @@ func TestController_Delete(t *testing.T) {
 	// setup test
 	db, def := TestDatabase()
 	defer def()
-	c := &Controller{db}
 	user := &TestUser{
 		Login:    []byte("TestController_Delete"),
 		Password: "",
 	}
 	// create user
-	EP(c.Create(user))
-	exists, err := c.Exists(user)
+	EP(db.Create(user))
+	exists, err := db.Exists(user)
 	EP(err)
 	// check exists
 	if !exists {
 		t.Error()
 	}
 	// delete
-	EP(c.Delete(user))
+	EP(db.Delete(user))
 
 	// test
-	b, err := c.Get(user)
+	b, err := db.Get(user)
 	EP(err)
 	if len(b) > 0 {
 		t.Error()
 	}
 	// exists
-	exists, err = c.Exists(user)
+	exists, err = db.Exists(user)
 	EP(err)
 	// check exists
 	if exists {
@@ -66,14 +65,13 @@ func TestController_Get(t *testing.T) {
 	// setup test
 	db, def := TestDatabase()
 	defer def()
-	c := &Controller{db}
 	user := &TestUser{
 		Login:    []byte("TestController_Get"),
 		Password: "",
 	}
 	//
 	// empty
-	b, err := c.Get(user)
+	b, err := db.Get(user)
 	EP(err)
 	if len(b) > 0 {
 		t.Error()
@@ -84,22 +82,21 @@ func TestController_Exists(t *testing.T) {
 	// setup test
 	db, def := TestDatabase()
 	defer def()
-	c := &Controller{db}
 	user := &TestUser{
 		Login:    []byte("TestController_Exists"),
 		Password: "",
 	}
 	//
 	// create user & check
-	EP(c.Create(user))
-	exists, err := c.Exists(user)
+	EP(db.Create(user))
+	exists, err := db.Exists(user)
 	EP(err)
 	if !exists {
 		t.Error()
 	}
 	// check false
 	user.Login = []byte("TestController_ExistsTestController_Exists")
-	exists, err = c.Exists(user)
+	exists, err = db.Exists(user)
 	EP(err)
 	if exists {
 		t.Error()
@@ -110,7 +107,6 @@ func TestBoltDatabase_Init(t *testing.T) {
 	// setup test
 	db, def := TestDatabase()
 	defer def()
-	c := &Controller{db}
 	user := &TestUser{
 		Login:    []byte("TestBoltDatabase_Init"),
 		Password: "TestBoltDatabase_Init",
@@ -118,10 +114,10 @@ func TestBoltDatabase_Init(t *testing.T) {
 	//
 
 	// insert user
-	EP(c.Create(user))
+	EP(db.Create(user))
 
 	// get user bytes
-	b, err := c.Get(user)
+	b, err := db.Get(user)
 	if len(b) < 1 {
 		EP(err)
 	}
@@ -137,10 +133,10 @@ func TestBoltDatabase_Init(t *testing.T) {
 	// insert again
 	user.Login = []byte("TestBoltDatabase_InitTestBoltDatabase_Init")
 	user.Password = user.Password + "TestBoltDatabase_Init"
-	EP(c.Create(user))
+	EP(db.Create(user))
 
 	// get
-	b, err = c.Get(user)
+	b, err = db.Get(user)
 	EP(json.Unmarshal(b, &user2))
 
 	// check
@@ -148,7 +144,7 @@ func TestBoltDatabase_Init(t *testing.T) {
 		t.Error(user, user2)
 	}
 	// check count
-	stats, err := c.Stats(user)
+	stats, err := db.Stats(user)
 	EP(err)
 
 	if stats.KeyN != 2 {
