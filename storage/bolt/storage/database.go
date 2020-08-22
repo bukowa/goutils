@@ -7,6 +7,15 @@ import (
 	"reflect"
 )
 
+type Database interface {
+	Create(Model) error
+	Delete(Model) error
+	Get(Model) ([]byte, error)
+	Exists(Model) (bool, error)
+	Stats(Model) (bolt.BucketStats, error)
+	GetAll(Model) ([][]byte, error)
+}
+
 type DB struct {
 	*bolt.DB
 }
