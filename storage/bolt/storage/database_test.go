@@ -158,3 +158,27 @@ func EP(err error) {
 		panic(err)
 	}
 }
+
+func TestDB_GetAll(t *testing.T) {
+	// setup test
+	db, def := TestDatabase()
+	defer def()
+
+	user := &TestUser{
+		Login:    []byte("login"),
+		Password: "passwd",
+	}
+	// insert user
+	EP(db.Create(user))
+	user2 := &TestUser{
+		Login:    []byte("test"),
+		Password: "test",
+	}
+	EP(db.Create(user2))
+	// get all users
+	users, err := db.GetAll(user)
+	EP(err)
+	if len(users) != 2 {
+		t.Error(users)
+	}
+}

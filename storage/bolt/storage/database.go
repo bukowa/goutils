@@ -89,6 +89,20 @@ func (db *DB) Stats(m Model) (bs bolt.BucketStats, err error) {
 	return
 }
 
+func (db *DB) GetAll(m Model) (data [][]byte, err error) {
+	return data, db.View(func(tx *bolt.Tx) error {
+		b, err := db.BucketFor(m, tx)
+		if err != nil {
+			return err
+		}
+		c := b.Cursor()
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			data = append(data, v)
+		}
+		return nil
+	})
+}
+
 func (db *DB) Init(opts *bolt.Options, path string, types ...Model) (err error) {
 	// open database
 	db.DB, err = bolt.Open(path, 0600, opts)
