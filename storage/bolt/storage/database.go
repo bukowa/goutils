@@ -5,18 +5,24 @@ import (
 	"encoding/json"
 	"github.com/boltdb/bolt"
 	"reflect"
+	"sync"
 )
 
 type Database interface {
 	Create(Model) error
+	CreateLocked(Model) error
 	Delete(Model) error
+	DeleteLocked(Model) error
 	Get(Model) ([]byte, error)
+	GetLocked(Model) ([]byte, error)
 	Exists(Model) (bool, error)
+	ExistsLocked(Model) (bool, error)
 	Stats(Model) (bolt.BucketStats, error)
 	GetAll(Model) ([][]byte, error)
 }
 
 type DB struct {
+	mu sync.Mutex
 	*bolt.DB
 }
 
@@ -110,6 +116,30 @@ func (db *DB) GetAll(m Model) (data [][]byte, err error) {
 		}
 		return nil
 	})
+}
+
+func (db *DB) DeleteLocked(m Model) error {
+	defer db.mu.Unlock()
+	db.mu.Lock()
+	return db.Delete(m)
+}
+
+func (db *DB) GetLocked(m Model) ([]byte, error) {
+	defer db.mu.Unlock()
+	db.mu.Lock()
+	return db.Get(m)
+}
+
+func (db *DB) CreateLocked(m Model) error {
+	defer db.mu.Unlock()
+	db.mu.Lock()
+	return db.Create(m)
+}
+
+func (db *DB) ExistsLocked(m Model) (bool, error) {
+	defer db.mu.Unlock()
+	db.mu.Lock()
+	return db.Exists(m)
 }
 
 func (db *DB) Init(opts *bolt.Options, path string, types ...Model) (err error) {

@@ -182,3 +182,22 @@ func TestDB_GetAll(t *testing.T) {
 		t.Error(users)
 	}
 }
+
+func TestDB_Locked(t *testing.T) {
+	// setup test
+	db, def := TestDatabase()
+	defer def()
+
+	user := &TestUser{
+		Login:    []byte("login"),
+		Password: "passwd",
+	}
+	if err := db.CreateLocked(user); err != nil {
+		t.Error(err)
+	}
+	if v, err := db.ExistsLocked(user); err != nil {
+		t.Error(err)
+	} else if !v{
+		t.Error(v)
+	}
+}
