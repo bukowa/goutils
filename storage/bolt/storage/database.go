@@ -19,11 +19,16 @@ type Database interface {
 	ExistsLocked(Model) (bool, error)
 	Stats(Model) (bolt.BucketStats, error)
 	GetAll(Model) ([][]byte, error)
+	Lock() *sync.Mutex
 }
 
 type DB struct {
 	mu sync.Mutex
 	*bolt.DB
+}
+
+func (db *DB) Lock() *sync.Mutex {
+	return &db.mu
 }
 
 func (db *DB) Get(m Model) (b []byte, err error) {
